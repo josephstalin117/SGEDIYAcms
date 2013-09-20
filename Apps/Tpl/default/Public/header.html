@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$title}</title>
+<meta name="keywords" content="{$keywords}" />
+<meta name="description" content="{$description}" />
+<link href="../Public/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.7.2.min.js"></script>
+<load href="../Public/js/jquery.form.js" />
+<load href="../Public/js/common.js" />
+<style type="text/css">
+#nav_{$position[0]['id']}{background:url(../Public/images/nav.jpg) no-repeat center;}
+</style>
+
+</head>
+<body>
+
+<!--百度分享-->
+<yufu:other settag="bdshare" />
+
+<div id="container">
+    <div id="header">
+    	<div class="logo"><a href="__APP__"><img src="__ROOT__/Uploads<yufu:set settag="logo" />" /></a></div>
+        <div class="member">
+            <if condition="$Think.session.account != null">
+                欢迎您！<a href="{:U('Member/index')}">{$Think.session.account}</a>&nbsp;&nbsp;<a href="{:U('Member/logout')}" target='_top'>退出</a>&nbsp;&nbsp;<a href="{:U('Shopcart/index')}">购物车</a>
+                <else />
+                <a href="{:U('Member/register')}">注册</a>&nbsp;|&nbsp;<a href="{:U('Member/login')}">登录</a>
+            </if>
+            
+        </div>
+        <div class="jrsc">
+            <yufu:other settag="collect" />
+        </div>
+        <div class="swsy">
+            <yufu:other settag="homepage" />
+        </div>
+        <div class="search">
+            <yufu:other settag="lxdh" />
+        </div>
+        <div class="nav">
+            <ul>
+                <li id="nav_0"><a href="__APP__">首页</a></li>
+                <volist name="nav_list" id="vo">
+                    <li id="nav_{$vo.id}">
+                        <a href="{$vo.url}">{$vo.catname}</a>
+                        <notempty name="vo.sub_nav">
+                        <ul class="sub_nav_ul">
+                            <volist name="vo.sub_nav" id="sub">
+                                <li><a href="{$sub.url}">{$sub.catname}</a></li>
+                            </volist>
+                        </ul>
+                        </notempty>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+        <div class="ad">
+            <!--图片轮换播放-->
+            <div id="play">	
+                <div id="play_info_bg"></div>
+                <div id="play_info"></div>
+                <div id="play_text">
+                    <ul>
+                        <yufu:slide field="id" order="listorder desc" num="5">
+                        <li>{$key+1}</li>
+                        </yufu:slide>
+                    </ul>
+                </div>
+                <div id="play_list">
+                    <yufu:slide field="id,title,url,img" order="listorder desc" num="5">
+                        <a href="{$slide.url}" target="_blank"><img src="__UPLOADS__{$slide.img}" alt="{$slide.title}" /></a>
+                   </yufu:slide>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+var t = n = 0, count = $("#play_list a").size();
+$(function(){
+    
+    //幻灯片播放
+    $("#play_list a:not(:first-child)").hide();
+    $("#play_info").html($("#play_list a:first-child").find("img").attr('alt'));
+    $("#play_info").click(function(){window.open($("#play_list a:first-child").attr('href'), "_blank");});
+    
+    $("#play_text li:first-child").css({"background":"#fff",'color':'#000'});
+    $("#play_text li").click(function() {
+            var i = $(this).text() - 1;
+            n = i;
+            if (i >= count) return;
+            $("#play_info").html($("#play_list a").eq(i).find("img").attr('alt'));
+            $("#play_info").unbind().click(function(){window.open($("#play_list a").eq(i).attr('href'), "_blank");});
+            $("#play_list a").filter(":visible").fadeOut(500).parent().children().eq(i).fadeIn(1000);
+            $(this).css({"background":"#fff",'color':'#000'}).siblings().css({"background":"#000",'color':'#fff'});
+    });
+    t = setInterval("showAuto()", 5000);
+    $("#play").hover(function(){clearInterval(t);}, function(){t = setInterval("showAuto()", 5000);});
+    
+    $(".nav ul li:has(ul)").hover(function(){
+        $(this).children("ul").stop(true,true).slideDown(400);
+    },function(){
+        $(this).children("ul").stop(true,true).slideUp("fast");
+    });
+    
+});
+function showAuto(){
+    n = n >= (count - 1) ? 0 : ++n;
+    $("#play_text li").eq(n).trigger('click');
+}
+</script>

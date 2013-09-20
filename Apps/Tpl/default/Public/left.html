@@ -1,0 +1,20 @@
+<div class="model">
+    <div class="model_top">产品分类<span><a href="#"></a></span></div>
+    <div class="model_content clearbimg">
+    <ul>
+        <div class="lf_tree">
+        <yufu:category catid="12">
+            <if condition="$_result[$key]['count'] eq $_result[$key-1]['count'] or $_result[$key-1]['count'] eq null">
+                <li><a href="{:U('Product/index',array('id'=>$category['id']))}">{$category.catname}</a></li> 
+            <elseif condition="$_result[$key]['count'] gt $_result[$key-1]['count']"/>
+                <ul>
+                <li><a href="{:U('Product/index',array('id'=>$category['id']))}">{$category.catname}</a></li>
+            <elseif condition="$_result[$key]['count'] lt $_result[$key-1]['count']"/>
+                </ul>
+                <li><a href="{:U('Product/index',array('id'=>$category['id']))}">{$category.catname}</a></li>
+            </if>
+        </yufu:category>
+        </div>
+    </ul>
+    </div>
+</div>

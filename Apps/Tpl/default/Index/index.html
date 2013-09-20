@@ -1,0 +1,67 @@
+<include file="Public:header" />
+    <div id="main">
+    	<div class="main_left">
+            <div class="model">
+                <div class="model_top">官方公告<span><a href="#"></a></span></div>
+                <div class="model_content clearbimg">
+                    <ul>                    
+                        <yufu:announce field="id,title" order="create_time desc" num="5" >
+                        <li><a href="{:U('Announce/show',array('id'=>$announce['id']))}" target="_blank">{$announce.title|msubstr=0,18}</a></li>
+                        </yufu:announce>
+                    </ul>
+                </div>
+            </div>
+            <div class="model">
+            	<div class="model_top">最新咨询<span><a href="{:U('Article/index',array('id'=>'1'))}" target="_blank">MORE+</a></span></div>
+                <div class="model_content">
+                <ul>
+                    <yufu:article catid="1" field="id,title" order="create_time desc" num="5" >
+                        <li><a href="{:U('Article/show',array('id'=>$article['id']))}" target="_blank">{$article.title|msubstr=0,18}</a></li>
+                    </yufu:article>
+                </ul>
+                </div>
+            </div>
+            <include file="Public:left" />
+            
+        </div>
+        <div class="main_right">
+        	<div class="content">
+            	<div class="content_top">公司简介<span><a href="{:U('Content/index',array('id'=>'36'))}" target="_blank">MORE+</a></span></div>
+                <div class="content_main" style="padding:0 10px;">
+                    <yufu:content catid="36">
+                        {$content.content}
+                    </yufu:content>
+                </div>
+            </div>
+            <div class="content">
+            	<div class="content_top cmain">产品展示<span><a href="{:U('Product/index',array('id'=>'12'))}" target="_blank">MORE+</a></span></div>
+                <div class="content_main">
+                    <ul class="listcontent">
+                       <yufu:product catid="12" order="create_time desc" num="9" >
+                        <li>
+                        <div class="img"><a href="{:U('Product/show',array('id'=>$product['id']))}" target="_blank"><img src="__ROOT__/Uploads{$product.thumb}" width="160" height="160" /></a></div>
+                        <div class="title"><a href="{:U('Product/show',array('id'=>$product['id']))}" target="_blank">{$product.title|msubstr=0,30}</a></div>
+                        <div class="price">价格：<span>￥{$product.price}</span></div>
+                        </li> 
+                       </yufu:product>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="clear"></div>
+<div class="hr1"></div>
+<div class="links">
+    <span>友情链接：</span>
+    <volist name="list" id="vo">
+        <if condition="$vo['type'] eq 0 ">
+            <if condition="$vo['linktype'] eq 0">
+            <a href="{$vo.url}" target="_blank">{$vo.name}</a>|
+            <else />
+            <a href="{$vo.url}" target="_blank"><img src="__ROOT__/Uploads{$vo.logo}" alt="{$vo.name}" /></a>|
+            </if>
+        </if>
+    </volist>
+    <a href="{:U('Link/index')}"><span style="color:red;">更多&gt;</span></a>
+</div>
+<include file="Public:footer" />
